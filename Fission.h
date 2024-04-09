@@ -2,6 +2,8 @@
 #define _FISSION_H_
 #include <xtensor/xtensor.hpp>
 #include <string>
+#include <stdlib.h>
+#include <iterator>
 
 namespace Fission {
   using Coords = std::vector<std::tuple<int, int, int>>;
@@ -33,6 +35,29 @@ namespace Fission {
     bool ensureHeatNeutral;
     int goal;
     bool symX, symY, symZ;
+
+
+
+    static Settings create(int sizeX, int sizeY, int sizeZ, double fuelBasePower, double fuelBaseHeat, int limit[Air], double coolingRates[Cell], 
+        bool ensureActiveCoolerAccessible, bool ensureHeatNeutral, int goal, bool symX, bool symY, bool symZ)        
+    {
+        Settings s = {};
+        s.sizeX = sizeX;
+        s.sizeY = sizeY;
+        s.sizeZ = sizeZ;
+        s.fuelBasePower = fuelBasePower;
+        s.fuelBaseHeat = fuelBaseHeat;
+        memcpy(s.limit, limit, sizeof(int) * Air);
+        memcpy(s.coolingRates, coolingRates, sizeof(double) * Cell);
+        s.ensureActiveCoolerAccessible = ensureActiveCoolerAccessible;
+        s.ensureHeatNeutral = ensureHeatNeutral;
+        s.goal = goal;
+        s.symX = symX;
+        s.symY = symY;
+        s.symZ = symZ;
+
+        return s;
+    }
   };
 
   struct Evaluation {
